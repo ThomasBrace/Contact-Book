@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="">
+    <meta name="author" content="Thomas Brace">
+
+    <title>Contact Book</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+      <div class="container-fluid">
+        <div class="row">
+          <div id="sidebar" class="col-xs-12 col-md-3 sidebar">
+          </div>
+          <div id="content" class="col-xs-12 col-md-9 main">
+          </div>
+        </div>
+      </div>
+
+      <script src="https://fb.me/react-15.0.0.js"></script>
+      <script src="https://fb.me/react-dom-15.0.0.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="style.css">
+
+      <script type="text/babel">
+
+            class AppContainer extends React.Component {
+
+              render(){
+                return(
+                  <div className="container-fluid">
+                    <div className="row">
+                      <div id="sidebar" className="col-xs-12 col-md-3 sidebar">
+                      </div>
+                      <div id="content" className="col-xs-12 col-md-9 main">
+                      </div>
+                    </div>
+                  </div>
+                );
+              };
+            }
+
+            class ContactNav extends React.Component {
+              constructor() {
+                super();
+
+                this.state = {
+                  contactsList: [
+                    {id:1, name: 'Tom Brace', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
+                    {id:2, name: 'Ruth Brace', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
+                    {id:3, name: 'Burt Lancaster', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
+                    {id:4, name: 'Emily Brace', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
+                    {id:5, name: 'Harry Brace', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
+                    {id:6, name: 'John Smith', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
+                    {id:7, name: 'Dave Johnson', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''}
+                  ]
+                }
+              }
+
+              render() {
+                const contacts = this._getContacts() || [];
+                return(
+                  <div>
+                    <div className="input-group">
+                      <input type="text" className="form-control" placeholder="Search for..." />
+                      <span className="input-group-btn">
+                        <button className="btn btn-default" type="button">Go!</button>
+                      </span>
+                    </div>
+                    <ul className="nav nav-sidebar">
+                      {contacts}
+                    </ul>
+                  </div>
+                );
+              }
+
+              _getContacts() {
+                return this.state.contactsList.map((i) => {
+                  return (
+                    <Contact
+                      name={i.name} phone={i.phone} key={i.id} />
+                  );
+                });
+              }
+            }
+
+            class Contact extends React.Component {
+              constructor(){
+                super(); //not sure what this does
+                this.state ={
+                  isFavorite: false
+                };
+              }
+
+              _handleClick(){
+                this.setState({
+                  isFavorite: !this.state.isFavorite
+                })
+              }
+
+              render() {
+                //setup favorite start
+                let favorite;
+                if (!this.state.isFavorite){
+                  favorite = <span className="glyphicon glyphicon-star-empty pull-right" aria-hidden="true"></span>;
+                } else {
+                  favorite = <span className="glyphicon glyphicon-star pull-right" aria-hidden="true"></span>;
+                }
+                return(
+                  <li>
+                    <a href="#" onClick={this._handleClick.bind(this)} >{this.props.name}
+                      <a href="#" onClick={this._handleClick.bind(this)}>{favorite}</a>
+                    </a>
+                  </li>
+                )
+              }
+            }
+
+            class Content extends React.Component {
+              render() {
+                return(
+                  <div>
+                    <h1 className="page-header">Name</h1>
+                    <h2 className="sub-header">Info</h2>
+                  </div>
+                );
+              }
+            }
+
+            ReactDOM.render(
+              <ContactNav />, document.getElementById('sidebar')
+            );
+            ReactDOM.render(
+              <Content />, document.getElementById('content')
+            );
+      </script>
+   </body>
+</html>
