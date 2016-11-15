@@ -15,13 +15,7 @@
   </head>
   <body>
 
-      <div class="container-fluid">
-        <div class="row">
-          <div id="sidebar" class="col-xs-12 col-md-3 sidebar">
-          </div>
-          <div id="content" class="col-xs-12 col-md-9 main">
-          </div>
-        </div>
+      <div id="app">
       </div>
 
       <script src="https://fb.me/react-15.0.0.js"></script>
@@ -31,23 +25,7 @@
 
       <script type="text/babel">
 
-            class AppContainer extends React.Component {
-
-              render(){
-                return(
-                  <div className="container-fluid">
-                    <div className="row">
-                      <div id="sidebar" className="col-xs-12 col-md-3 sidebar">
-                      </div>
-                      <div id="content" className="col-xs-12 col-md-9 main">
-                      </div>
-                    </div>
-                  </div>
-                );
-              };
-            }
-
-            class ContactNav extends React.Component {
+            class AppContainer extends React.Component { //parent Component
               constructor() {
                 super();
 
@@ -63,6 +41,24 @@
                   ]
                 }
               }
+
+              render(){
+                return(
+                  <div className="container-fluid">
+                    <div className="row">
+                      <div id="sidebar" className="col-xs-12 col-md-3 sidebar">
+                        <ContactNav contactsList={this.state.contactsList}/>
+                      </div>
+                      <div id="content" className="col-xs-12 col-md-9 main">
+                        <Content />
+                      </div>
+                    </div>
+                  </div>
+                );
+              };
+            }
+
+            class ContactNav extends React.Component { //child of AppContainer
 
               render() {
                 const contacts = this._getContacts() || [];
@@ -82,7 +78,7 @@
               }
 
               _getContacts() {
-                return this.state.contactsList.map((i) => {
+                return this.props.contactsList.map((i) => {
                   return (
                     <Contact
                       name={i.name} phone={i.phone} key={i.id} />
@@ -91,7 +87,7 @@
               }
             }
 
-            class Contact extends React.Component {
+            class Contact extends React.Component { //child of ContactNav
               constructor(){
                 super(); //not sure what this does
                 this.state ={
@@ -116,14 +112,14 @@
                 return(
                   <li>
                     <a href="#" onClick={this._handleClick.bind(this)} >{this.props.name}
-                      <a href="#" onClick={this._handleClick.bind(this)}>{favorite}</a>
+                      <span onClick={this._handleClick.bind(this)}>{favorite}</span>
                     </a>
                   </li>
                 )
               }
             }
 
-            class Content extends React.Component {
+            class Content extends React.Component { //child of AppContainer
               render() {
                 return(
                   <div>
@@ -134,11 +130,9 @@
               }
             }
 
+
             ReactDOM.render(
-              <ContactNav />, document.getElementById('sidebar')
-            );
-            ReactDOM.render(
-              <Content />, document.getElementById('content')
+              <AppContainer />, document.getElementById('app')
             );
       </script>
    </body>
