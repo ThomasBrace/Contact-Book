@@ -38,8 +38,15 @@
                     {id:5, name: 'Harry Brace', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
                     {id:6, name: 'John Smith', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
                     {id:7, name: 'Dave Johnson', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''}
-                  ]
+                  ],
+                  selectedContact: {id:1, name: 'Tom Brace', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''}
                 }
+              }
+
+              selectContact(obj){
+                this.setState({
+                  selectedContact: obj
+                });
               }
 
               render(){
@@ -47,10 +54,15 @@
                   <div className="container-fluid">
                     <div className="row">
                       <div id="sidebar" className="col-xs-12 col-md-3 sidebar">
-                        <ContactNav contactsList={this.state.contactsList}/>
+                        <ContactNav
+                          selectContact={this.selectContact}
+                          contactsList={this.state.contactsList}
+                        />
                       </div>
                       <div id="content" className="col-xs-12 col-md-9 main">
-                        <Content />
+                        <Content
+                          selectedContact={this.state.selectedContact}
+                        />
                       </div>
                     </div>
                   </div>
@@ -77,11 +89,19 @@
                 );
               }
 
+              selectContact(obj){
+                this.props.selectContact(obj)
+              }
+
               _getContacts() {
                 return this.props.contactsList.map((i) => {
                   return (
                     <Contact
-                      name={i.name} phone={i.phone} key={i.id} />
+                      name={i.name}
+                      phone={i.phone}
+                      key={i.id}
+                      selectContact={this.selectContact}
+                    />
                   );
                 });
               }
@@ -101,6 +121,10 @@
                 })
               }
 
+              _handleSelect(obj){
+                this.props.selectContact(obj)
+              }
+
               render() {
                 //setup favorite start
                 let favorite;
@@ -111,7 +135,7 @@
                 }
                 return(
                   <li>
-                    <a href="#" onClick={this._handleClick.bind(this)} >{this.props.name}
+                    <a href="#" onClick={this._handleSelect.bind(this.props)} >{this.props.name}
                       <span onClick={this._handleClick.bind(this)}>{favorite}</span>
                     </a>
                   </li>
@@ -123,8 +147,10 @@
               render() {
                 return(
                   <div>
-                    <h1 className="page-header">Name</h1>
-                    <h2 className="sub-header">Info</h2>
+                    <h1 className="page-header">{this.props.selectedContact.name}</h1>
+                    <h3 className="sub-header">{this.props.selectedContact.phone}</h3>
+                    <h6 className="sub-header">{this.props.selectedContact.address}</h6>
+                    <h6 className="sub-header">{this.props.selectedContact.notes}</h6>
                   </div>
                 );
               }
