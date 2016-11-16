@@ -43,31 +43,32 @@
                 }
               }
 
-              selectContact(obj){
-                this.setState({
-                  selectedContact: obj  //this is not working
-                });
-              }
-
               render(){
                 return(
                   <div className="container-fluid">
                     <div className="row">
                       <div id="sidebar" className="col-xs-12 col-md-3 sidebar">
                         <ContactNav
-                          selectContact={this.selectContact}
+                          selectContact1={this.updateContact} //this is not working
                           contactsList={this.state.contactsList}
                         />
                       </div>
                       <div id="content" className="col-xs-12 col-md-9 main">
                         <Content
-                          selectedContact={this.state.selectedContact} //this is not working
+                          selectedContact={this.state.selectedContact}
                         />
                       </div>
                     </div>
                   </div>
                 );
               };
+
+              updateContact(selectedObj){
+                console.log("AppContainer :"+selectedObj);
+                // this.setState({
+                //   selectedContact: selectedObj  //this is not working
+                // });
+              }
             }
 
             class ContactNav extends React.Component { //child of AppContainer
@@ -89,9 +90,10 @@
                 );
               }
 
-              selectContact(){
-                console.log(this.props);
-                this.props.selectContact() //this is not working
+              selectContact(selectedObj){
+                console.log("ContactNav :"+selectedObj);
+                this.props.updateContact(selectedObj)
+                //this.props.selectContact() //this is not working
               }
 
               _getContacts() {
@@ -101,7 +103,7 @@
                       name={i.name}
                       phone={i.phone}
                       key={i.id}
-                      selectContact1={this.selectContact}
+                      selectContact={this.selectContact}
                     />
                   );
                 });
@@ -109,37 +111,19 @@
             }
 
             class Contact extends React.Component { //child of ContactNav
-              constructor(){
-                super(); //not sure what this does
-                this.state ={
-                  isFavorite: false
-                };
-              }
 
-              _handleClick(){
-                this.setState({
-                  isFavorite: !this.state.isFavorite
-                })
-              }
+              _handleClick(name){
+                let selectedObj = this.props.name
+                console.log("Contact :"+selectedObj);
 
-              _handleSelect(name){
-                console.log(this.props.name);
-                this.props.selectContact()
-                //this.setState({})
+                this.props.selectContact(selectedObj)
               }
 
               render() {
-                //setup favorite start
-                let favorite;
-                if (!this.state.isFavorite){
-                  favorite = <span className="glyphicon glyphicon-star-empty pull-right" aria-hidden="true"></span>;
-                } else {
-                  favorite = <span className="glyphicon glyphicon-star pull-right" aria-hidden="true"></span>;
-                }
                 return(
                   <li>
-                    <a href="#" onClick={this._handleSelect.bind(this)} >{this.props.name}
-                      <span onClick={this._handleClick.bind(this)}>{favorite}</span>
+                    <a href="#" onClick={this._handleClick.bind(this)} >
+                      {this.props.name}
                     </a>
                   </li>
                 )
