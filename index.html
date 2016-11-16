@@ -45,7 +45,7 @@
 
               selectContact(obj){
                 this.setState({
-                  selectedContact: obj
+                  selectedContact: obj  //this is not working
                 });
               }
 
@@ -61,7 +61,7 @@
                       </div>
                       <div id="content" className="col-xs-12 col-md-9 main">
                         <Content
-                          selectedContact={this.state.selectedContact}
+                          selectedContact={this.state.selectedContact} //this is not working
                         />
                       </div>
                     </div>
@@ -89,8 +89,9 @@
                 );
               }
 
-              selectContact(obj){
-                this.props.selectContact(obj)
+              selectContact(){
+                console.log(this.props);
+                this.props.selectContact() //this is not working
               }
 
               _getContacts() {
@@ -100,7 +101,7 @@
                       name={i.name}
                       phone={i.phone}
                       key={i.id}
-                      selectContact={this.selectContact}
+                      selectContact1={this.selectContact}
                     />
                   );
                 });
@@ -121,8 +122,10 @@
                 })
               }
 
-              _handleSelect(obj){
-                this.props.selectContact(obj)
+              _handleSelect(name){
+                console.log(this.props.name);
+                this.props.selectContact()
+                //this.setState({})
               }
 
               render() {
@@ -135,7 +138,7 @@
                 }
                 return(
                   <li>
-                    <a href="#" onClick={this._handleSelect.bind(this.props)} >{this.props.name}
+                    <a href="#" onClick={this._handleSelect.bind(this)} >{this.props.name}
                       <span onClick={this._handleClick.bind(this)}>{favorite}</span>
                     </a>
                   </li>
