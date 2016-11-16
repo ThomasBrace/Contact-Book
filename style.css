@@ -1,4 +1,4 @@
-html, body, .container-fluid, .row {
+html, body, #app, .container-fluid, .row {
   height: 100%;
 }
 .sidebar {
