@@ -31,15 +31,15 @@
 
                 this.state = {
                   contactsList: [
-                    {id:1, name: 'Tom Brace', phone: '0123456789', address:'fg dfgh dfgh dfgh dfgh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
-                    {id:2, name: 'Kyle Barclay', phone: '0123456789', address:'fg dfgh dfgh dfgh dfg', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
-                    {id:3, name: 'Burt Lancaster', phone: '0123456789', address:'fg dfgh dfgh dfgh dfg', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
-                    {id:4, name: 'Jeannie Kyler', phone: '0123456789', address:'fg dfgh dfgh dfgh dfg', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
-                    {id:5, name: 'Ursella Phyllida', phone: '0123456789', address:'fg dfgh dfgh dfgh dfg', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
-                    {id:6, name: 'John Smith', phone: '0123456789', address:'fg dfgh dfgh dfgh dfg', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
-                    {id:7, name: 'Dave Johnson', phone: '0123456789', address:'fg dfgh dfgh dfgh dfg', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''}
+                    {id:1, name: 'Tom Brace', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
+                    {id:2, name: 'Ruth Brace', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
+                    {id:3, name: 'Burt Lancaster', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
+                    {id:4, name: 'Emily Brace', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
+                    {id:5, name: 'Harry Brace', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
+                    {id:6, name: 'John Smith', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''},
+                    {id:7, name: 'Dave Johnson', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''}
                   ],
-                  selectedContact: {id:1, name: 'Tom Brace', phone: '0123456789', address:'fg dfgh dfgh dfgh dfg', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''}
+                  selectedContact: {id:1, name: 'Tom Brace', phone: '0123456789', address:'118 Shiplane, farnborough, gu148bh', notes: 'sdfdsfasdfasdf asdf as df asdf  sadf a sdfasdf', Quote:''}
                 }
               }
 
@@ -49,7 +49,7 @@
                     <div className="row">
                       <div id="sidebar" className="col-xs-12 col-md-3 sidebar">
                         <ContactNav
-                          updateContact={this._updateContact.bind(this)}
+                          updateContact={this.updateContact} //this is not working
                           contactsList={this.state.contactsList}
                         />
                       </div>
@@ -63,12 +63,11 @@
                 );
               };
 
-              _updateContact(obj){
-  console.log(obj)
-
-              this.setState({
-                selectedContact: obj
-              });
+              updateContact(selectedObj){
+                console.log("AppContainer :"+selectedObj);
+                // this.setState({
+                //   selectedContact: selectedObj  //this is not working
+                // });
               }
             }
 
@@ -90,24 +89,47 @@
                   </div>
                 );
               }
-              _handleClick(){
-                event.preventDefault();
-console.log(this)
-                let obj = this._obj
-                this.props.updateContact(obj);
-              }
 
+              selectContact(selectedObj){
+                console.log("ContactNav :"+this.name);
+                console.log(this)
+                console.log(selectedObj)
+              }
 
               _getContacts() {
                 return this.props.contactsList.map((i) => {
                   return (
-                    <li key={i.id}>
-                      <a href="#" onClick={this._handleClick.bind(this)} ref={(input) => this._obj = i}>
-                        {i.name}
-                      </a>
-                    </li>
+                    <Contact
+                      name={i.name}
+                      phone={i.phone}
+                      key={i.id}
+                      // selectContact={this.selectContact}
+                      onClick={this.selectContact}
+                    />
                   );
                 });
+              }
+            }
+
+            class Contact extends React.Component { //child of ContactNav
+
+              _handleClick(name){
+                let selectedObj = this
+                console.log("Contact :"+selectedObj);
+                console.log(this)
+
+                this.props.selectContact(selectedObj)
+              }
+
+              render() {
+                return(
+                  <li>
+                    // <a href="#" onClick={this._handleClick.bind(this)} >
+                    <a href="#" onClick={this.props.onClick}>
+                      {this.props.name}
+                    </a>
+                  </li>
+                )
               }
             }
 
