@@ -65,8 +65,7 @@
 
               _updateContact(obj){
   console.log(obj)
-
-              this.setState({
+                this.setState({
                 selectedContact: obj
               });
               }
@@ -90,10 +89,10 @@
                   </div>
                 );
               }
-              _handleClick(){
+              _handleClick(obj){
                 event.preventDefault();
-console.log(this)
-                let obj = this._obj
+console.log(this._obj);
+                //let obj = this._obj
                 this.props.updateContact(obj);
               }
 
@@ -102,7 +101,7 @@ console.log(this)
                 return this.props.contactsList.map((i) => {
                   return (
                     <li key={i.id}>
-                      <a href="#" onClick={this._handleClick.bind(this)} ref={(input) => this._obj = i}>
+                        <a href="#" key={i.id} onClick={() => this._handleClick(i) }>
                         {i.name}
                       </a>
                     </li>
