@@ -15,3 +15,7 @@ html, body, #app, .container-fluid, .row {
   background-color: blue;
   color: white;
 }
+.add-button, .add-button .btn, .filter, .filter .form-control {
+  width: 100%;
+  margin-top: 5px;
+}
