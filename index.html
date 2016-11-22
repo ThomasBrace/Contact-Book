@@ -75,16 +75,19 @@
             }
 
             class ContactNav extends React.Component { //child of AppContainer
+              constructor() {
+                super();
+                this.state = {
+                  filter: null
+                }
+              }
 
               render() {
                 const contacts = this._getContacts() || [];
                 return(
                   <div>
                     <div className="input-group">
-                      <input id="contactsFilter" type="text" className="form-control" placeholder="Search for..." />
-                      <span className="input-group-btn">
-                        <button className="btn btn-default" type="button">Go!</button>
-                      </span>
+                      <input id="contactsFilter" type="text" className="form-control" onChange={this._filterContacts.bind(this)} placeholder="Search for..." />
                     </div>
                     <ul className="nav nav-sidebar">
                       {contacts}
@@ -97,22 +100,41 @@
                 this.props.updateSelectedContact(obj);
               }
 
-
-              _getContacts() {
-                return this.props.contactsList.map((i) => {
-                  return (
-                    <li key={i.id}>
-                        <a href="#" key={i.id} onClick={() => this._handleClick(i) }>
-                        {i.name}
-                      </a>
-                    </li>
-                  );
+              _filterContacts(event) {
+                this.setState({
+                  filter: event.target.value
                 });
               }
 
-              _filterContacts() {
 
-                
+              _getContacts() {
+                let filter = this.state.filter;
+                if (filter != null && filter.length > 0){
+                  filter = filter.toUpperCase() //convert to upper case to match cases. 
+                  return this.props.contactsList
+                    .filter(function(entry){
+                      return entry.name.toUpperCase().indexOf(filter) != -1;  //test against filter
+                    })
+                    .map((i) => { // build new arry fo results
+                      return (
+                        <li key={i.id}>
+                            <a href="#" key={i.id} onClick={() => this._handleClick(i) }>
+                            {i.name}
+                          </a>
+                        </li>
+                      );
+                    });
+                } else {
+                  return this.props.contactsList.map((i) => {
+                    return (
+                      <li key={i.id}>
+                          <a href="#" key={i.id} onClick={() => this._handleClick(i) }>
+                          {i.name}
+                        </a>
+                      </li>
+                    );
+                  });
+                }
               }
 
             }
