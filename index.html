@@ -21,6 +21,7 @@
       <script src="https://fb.me/react-15.0.0.js"></script>
       <script src="https://fb.me/react-dom-15.0.0.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
       <link rel="stylesheet" type="text/css" href="style.css">
 
       <script type="text/babel">
@@ -138,14 +139,14 @@
                 const contacts = this._getContacts() || [];
                 return(
                   <div>
-                    <div className="input-group add-button">
+                    <div className="form-group form-group-lg add-button">
                       <button type="button" className="btn btn-default" onClick={this.props.addContact}>
                         Add Contact&nbsp;
                         <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
                         <span className="glyphicon glyphicon-user" aria-hidden="true"></span>
                       </button>
                     </div>
-                    <div className="input-group filter">
+                    <div className="form-group form-group-lg filter">
                       <input id="contactsFilter" type="text" className="form-control" onChange={this._filterContacts.bind(this)} placeholder="Search for..." />
                     </div>
                     <ul className="nav nav-sidebar">
@@ -232,11 +233,13 @@
 
               render() {
                 let contactInfo = "";
+                let pageHeader = this.props.selectedContact.name !== "" ? this.props.selectedContact.name : "New Contact"; //set page title for new contacts
+                let buttonText = this.props.selectedContact.name !== "" ? "Update" : "Add Contact";
                 if(this.props.isEditing) {
                   contactInfo =
                       <div className="col-xs-10">
                         <form id="editContact" key={this.props.selectedContact.id}>
-                          <h1 className="page-header">Edit Contact</h1>
+                          <h1 className="page-header">{pageHeader}</h1>
                           <div className="form-group form-group-lg">
                             <label for="name" className="col-form-label">Name:</label>
                             <input type="text" id="name" className="form-control" placeholder="Name" defaultValue={this.props.selectedContact.name} />
@@ -247,6 +250,7 @@
                           </div>
                           <div className="form-group form-group-lg">
                             <label for="address" className="col-form-label">Address:</label>
+                            <button type="locate" className="btn btn-default">Here</button>
                             <textarea type="text" id="address" className="form-control" placeholder="address" rows="3" defaultValue={this.props.selectedContact.address} />
                           </div>
                           <div className="form-group form-group-lg">
@@ -254,7 +258,7 @@
                             <textarea type="text" id="notes" className="form-control" placeholder="notes" rows="3" defaultValue={this.props.selectedContact.notes} />
                           </div>
                           <div className="form-group form-group-lg">
-                            <button type="Update" className="btn btn-default" onClick={this._handleSubmit.bind(this)}>Update</button>
+                            <button type="Update" className="btn btn-default" onClick={this._handleSubmit.bind(this)}>{buttonText}</button>
                           </div>
                         </form>
                       </div>;
